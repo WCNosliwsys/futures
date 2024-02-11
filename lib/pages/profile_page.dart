@@ -1,6 +1,59 @@
 import 'package:flutter/material.dart';
 
-class ProfilePage extends StatelessWidget {
+import '../models/profile_model.dart';
+import '../models/trabajo_model.dart';
+
+class ProfilePage extends StatefulWidget {
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  ProfileModel? profileFuture;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    generateProfileData().then((value) {
+      setState(() {
+        profileFuture = value;
+      });
+    });
+  }
+
+  Future<ProfileModel> generateProfileData() async {
+    // Simular una carga de datos
+    await Future.delayed(Duration(seconds: 2));
+
+    // Generar datos falsos
+    ProfileModel profile = ProfileModel(
+      name: "Elliot Thomponn",
+      profesion: "Desarrollador móvil",
+      likes: 23,
+      folowers: 980,
+      rating: 8.9,
+      sobreMi:
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam at eleifend libero, eu rhoncus orci. Nam tortor leo, feugiat at orci ac, finibus elementum nisi. Phasellus",
+      trabajosList: [
+        TrabajoModel(
+          posicion: "Desarrollador Senior",
+          empresa: "TATA",
+          imageUrl:
+              "https://images.pexels.com/photos/1293120/pexels-photo-1293120.jpeg?auto=compress&cs=tinysrgb&w=600",
+        ),
+        TrabajoModel(
+          posicion: "Desarrollador Senior",
+          empresa: "TATA",
+          imageUrl:
+              "https://images.pexels.com/photos/1293120/pexels-photo-1293120.jpeg?auto=compress&cs=tinysrgb&w=600",
+        ),
+      ],
+    );
+
+    return profile;
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeigth = MediaQuery.of(context).size.height;
@@ -68,21 +121,18 @@ class ProfilePage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "Elliot Thompon",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
+                                      profileFuture != null ? profileFuture!.name : "Nombre del perfil no disponible",
+                                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                                     ),
                                     Text(
-                                      "Desarrollador mòvil",
+                                      profileFuture != null ? profileFuture!.profesion : "",
                                       style: TextStyle(color: Colors.black38),
                                     ),
                                     SizedBox(
                                       height: 16,
                                     ),
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Column(
                                           children: [
@@ -93,7 +143,7 @@ class ProfilePage extends StatelessWidget {
                                               ),
                                             ),
                                             Text(
-                                              "23",
+                                             profileFuture != null ? profileFuture!.likes.toString() : "",
                                               style: TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold,
@@ -104,13 +154,13 @@ class ProfilePage extends StatelessWidget {
                                         Column(
                                           children: [
                                             Text("Folowers"),
-                                            Text("980"),
+                                            Text(profileFuture != null ? profileFuture!.folowers.toString() : ""),
                                           ],
                                         ),
                                         Column(
                                           children: [
                                             Text("Rating"),
-                                            Text("8.9"),
+                                            Text(profileFuture != null ? profileFuture!.rating.toString() : ""),
                                           ],
                                         ),
                                       ],
@@ -128,10 +178,8 @@ class ProfilePage extends StatelessWidget {
                                   child: Container(
                                     padding: EdgeInsets.symmetric(vertical: 10),
                                     decoration: BoxDecoration(
-                                        border: Border.all(
-                                            width: 2, color: Colors.black26),
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
+                                        border: Border.all(width: 2, color: Colors.black26),
+                                        borderRadius: BorderRadius.circular(10)),
                                     alignment: Alignment.center,
                                     child: Text("Chat"),
                                   ),
@@ -145,10 +193,8 @@ class ProfilePage extends StatelessWidget {
                                   onTap: () {},
                                   child: Container(
                                     padding: EdgeInsets.symmetric(vertical: 10),
-                                    decoration: BoxDecoration(
-                                        color: Colors.blue,
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
+                                    decoration:
+                                        BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(10)),
                                     alignment: Alignment.center,
                                     child: Text(
                                       "Follow",
@@ -234,8 +280,7 @@ class ProfilePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          margin:
-                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           padding: EdgeInsetsDirectional.all(8),
                           child: Text("Sobre mi"),
                           decoration: BoxDecoration(
@@ -244,8 +289,7 @@ class ProfilePage extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                           child: Text(
                             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam at eleifend libero, eu rhoncus orci. Nam tortor leo, feugiat at orci ac, finibus elementum nisi. Phasellus",
                             style: TextStyle(
